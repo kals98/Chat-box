@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Chat box</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body onload="init()">
+
+  <!-- Main layout -->
+  <main>
+
+    <div class="container">
+        <div class="card text-center">
+            <div class="card-header">
+              Welcome User
+            </div>
+            <div class="card-body" >
+              <div class='text-secondary'>Chat-session</div><br>
+             <div id="chatbox">
+              
+             </div>
+            </div>
+            <div class="card-footer text-muted">
+                <form name="message" action="">
+                <input name="usermsg" type="text" id="usermsg" size="63" />
+                <button class="btn btn-dark" name="submitmsg" type="submit"  id="submitmsg" value="Send">Send</button>
+                <button class="btn btn-primary" name="receivemsg" type="submit"  id="receivemsg" value="receive">Receive</button>
+                </form>
+                <button class="btn btn-danger" onclick="deleteLog()"  id="deletemsg" value="delete">Delete Chat log</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+  </main>
+  <!-- Main layout -->
+
+  <!-- SCRIPTS -->
+  <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+    <!-- Custom scripts -->
+    <script type="text/javascript">
+    var texts = [{type:"agent",srno:1,msg:"hello"},{type:"agent",srno:1,msg:"How may I help You?"},{type:"user",srno:1,msg:"Hi pls help"}];
+    var i=0;
+
+    function init(){
+      if(localStorage.chat){
+        texts = JSON.parse(localStorage.chat);
+        i=texts.length;
+      }
+      else{
+        localStorage.chat = JSON.stringify(texts);
+        i=texts.length;
+      }
+    }
+    
+    // jQuery Document
+    $(document).ready(function(){
+      //If user enters and sends a message
+    	$("#submitmsg").click(function(){	
+        var userMsg = $("#usermsg").val();
+        if(userMsg != ""){
+        var text = {type:"user",srno:i,msg:userMsg};
+        console.log(texts);
+        texts.push(text);
+        localStorage.chat = JSON.stringify(texts);
+        i++;
+        loadLog();
+        }
+        else{
+          loadUserLog();
+        }
+    		$("#usermsg").attr("value", "");
+    		return false;
+    	});
+
+      //if user receives message from agent
+      $("#receivemsg").click(function(){	
+       var agentMsg = $("#usermsg").val();
+       if(agentMsg != ""){
+       var text = {type:"agent",srno:i,msg:agentMsg};
+       texts.push(text);
+       localStorage.chat = JSON.stringify(texts);
+       i++;
+       loadLog();
+       }
+       else{
+         loadAgentLog();
+       }
+    	 $("#usermsg").attr("value", "");
+    	 return false;
+    	});
+    });
+
+    function loadAgentLog(){		
+		$.ajax({
+			success: function(html){
+        var c ="";
+        for(j=0 ; j < texts.length; j++){
+        if(texts[j].type == "agent"){
+          var b = "<h5 class='card-text text-left text-primary'>Agent:" + texts[j].msg + "</h5><br>";
+          c = c + b;
+          }
+        }
+        $("#chatbox").html(c);//Insert chat log into the #chatbox div	
+		  	},
+		  });
+	  }
+
+    function loadUserLog(){		
+		$.ajax({
+			success: function(html){
+        var c ="";
+        for(j=0 ; j < texts.length; j++){
+          if(texts[j].type == "user"){
+          var b = "<h5 class='card-text text-right'>User:" + texts[j].msg + "</h5><br>";
+          c = c + b;
+          }
+        }
+        $("#chatbox").html(c);//Insert chat log into the #chatbox div	
+		  	},
+		  });
+	  }
+
+    function loadLog(){		
+		$.ajax({
+			success: function(html){
+        var c ="";
+        for(j=0 ; j < texts.length; j++){
+        if(texts[j].type == "user"){
+          var b = "<h5 class='card-text text-right'>User:" + texts[j].msg + "</h5><br>";
+          c = c + b;
+          }else{
+          var b = "<h5 class='card-text text-left text-primary'>Agent:" + texts[j].msg + "</h5><br>";
+          c = c + b;
+          }
+        }
+        $("#chatbox").html(c);//Insert chat log into the #chatbox div	
+		  	},
+		  });
+	  }
+
+    function deleteLog(){
+      localStorage.removeItem("chat");
+      console.log(localStorage.chat)
+      texts = [];
+      console.log(texts);
+    }
+
+</script>
+
+</body>
+</html>
