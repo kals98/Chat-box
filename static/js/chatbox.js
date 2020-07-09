@@ -1,23 +1,23 @@
 // var texts = [{type:"agent",srno:1,msg:"hello"},{type:"agent",srno:1,msg:"How may I help You?"},{type:"user",srno:1,msg:"Hi pls help"}];
-var texts = [];
+var texts=[];
 var i=0;
-
-
 // async/await
 async function myFetch() {
-
     let response = await fetch("http://127.0.0.1:5000/chat-messages")
     .then(resp => resp.json())
     .then(jsonData => {
       console.log(jsonData);
-      texts = jsonData;
+      var textdata = jsonData;
+      initialize(textdata);
     })
     .catch(err => console.log(err));
 
 }
+myFetch();
 
 
-myFetch().then(() => {
+function initialize(textdata) {
+  texts = textdata;
   if(localStorage.chat){
     texts = JSON.parse(localStorage.chat);
     i=texts.length;
@@ -26,12 +26,11 @@ myFetch().then(() => {
     localStorage.chat = JSON.stringify(texts);
     i=texts.length;
   }
-});
+};
 
 
 
 // jQuery Document
-$(document).ready(function(){
   //If user enters and sends a message
     $("#submitmsg").click(function(){	
     var userMsg = $("#usermsg").val();
@@ -64,11 +63,10 @@ $(document).ready(function(){
    else{
     loadMessage1(localStorage.chat);
    }
-     $.post("/", {type:"agent",srno:i,msg:userMsg});
      $("#usermsg").attr("value", "");
      return false;
     });
-});
+
 
 function deleteLog(){
   localStorage.removeItem("chat");
