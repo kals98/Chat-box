@@ -55,10 +55,8 @@
   
   function initialize() {
   var texts = JSON.parse('{{texts | tojson | safe }}');
-  console.log(texts);
   var confibean = JSON.parse('{{confibean | tojson | safe }}'); 
-  console.log(confibean);
-  if(localStorage.chat){
+  if(localStorage.texts){
     texts = JSON.parse(localStorage.texts);
     confibean = JSON.parse(localStorage.confibean);
     i=texts.length;

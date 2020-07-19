@@ -22,8 +22,13 @@
     });
 
   //if user receives message from agent
-  $("#receivemsg").click(function(){	
-    loadMessage1(localStorage.chat,localStorage.confibean);
+  $("#receivemsg").click(function(){
+    confibean = JSON.parse(localStorage.confibean);	
+    if(confibean[0]['type']=="chat"){
+      loadMessage1(localStorage.chat);
+    }else{
+      console.log("no data input")	
+    }
     return false;
     });
 

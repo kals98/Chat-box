@@ -1,7 +1,5 @@
-function loadMessage1(text,confi){
-    texts = JSON.parse(text);
-    confibean = JSON.parse(confi);	
-    console.log(confibean);			
+function loadMessage1(text){
+    texts = JSON.parse(text);		
     $.ajax({
         success: function(html){
     var c ="";
