@@ -1,33 +1,4 @@
 // var texts = [{type:"agent",srno:1,msg:"hello"},{type:"agent",srno:1,msg:"How may I help You?"},{type:"user",srno:1,msg:"Hi pls help"}];
-var texts=[];
-var i=0;
-// async/await
-async function myFetch() {
-    let response = await fetch("http://127.0.0.1:5000/chat-messages")
-    .then(resp => resp.json())
-    .then(jsonData => {
-      console.log(jsonData);
-      var textdata = jsonData;
-      initialize(textdata);
-    })
-    .catch(err => console.log(err));
-
-}
-myFetch();
-
-
-function initialize(textdata) {
-  texts = textdata;
-  if(localStorage.chat){
-    texts = JSON.parse(localStorage.chat);
-    i=texts.length;
-  }
-  else{
-    localStorage.chat = JSON.stringify(texts);
-    i=texts.length;
-  }
-};
-
 
 
 // jQuery Document
@@ -52,19 +23,8 @@ function initialize(textdata) {
 
   //if user receives message from agent
   $("#receivemsg").click(function(){	
-   var agentMsg = $("#usermsg").val();
-   if(agentMsg != ""){
-   var text = {type:"agent",srno:i,msg:agentMsg};
-   texts.push(text);
-   localStorage.chat = JSON.stringify(texts);
-   i++;
-   loadMessage1(localStorage.chat);
-   }
-   else{
-    loadMessage1(localStorage.chat);
-   }
-     $("#usermsg").attr("value", "");
-     return false;
+    loadMessage1(localStorage.chat,localStorage.confibean);
+    return false;
     });
 
 

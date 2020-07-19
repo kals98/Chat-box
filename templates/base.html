@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
   integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
-<body>
+<body onload="initialize()">
 
   <!-- Main layout -->
   <main>
@@ -22,20 +22,18 @@
             <div class="card-header">
               Welcome User
             </div>
-            <div class="card-body" >
-              <div class='text-secondary'>Chat-session</div><br>
+            <div class="card-body text-muted">
+              <form name="message" action="">
+              <button class="btn btn-primary" name="receivemsg" type="submit"  id="receivemsg" value="receive">Receive</button>
+              </form>
+              <button class="btn btn-danger" onclick="deleteLog()"  id="deletemsg" value="delete">Delete Chat log</button>
+          </div>
+            <div class="card-footer">
+              <div class='text-secondary'>Data</div><br>
              <div id="chatbox">
                 {% block chatcontent %}
                 {% endblock %}
              </div>
-            </div>
-            <div class="card-footer text-muted">
-                <form name="message" action="">
-                <input name="usermsg" type="text" id="usermsg" size="63" />
-                <button class="btn btn-dark" name="submitmsg" type="submit"  id="submitmsg" value="Send">Send</button>
-                <button class="btn btn-primary" name="receivemsg" type="submit"  id="receivemsg" value="receive">Receive</button>
-                </form>
-                <button class="btn btn-danger" onclick="deleteLog()"  id="deletemsg" value="delete">Delete Chat log</button>
             </div>
             </div>
         </div>
@@ -53,6 +51,26 @@
   integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/chatbox.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/loadMessage1.js') }}"></script>
+  <script type="text/javascript">
+  
+  function initialize() {
+  var texts = JSON.parse('{{texts | tojson | safe }}');
+  console.log(texts);
+  var confibean = JSON.parse('{{confibean | tojson | safe }}'); 
+  console.log(confibean);
+  if(localStorage.chat){
+    texts = JSON.parse(localStorage.texts);
+    confibean = JSON.parse(localStorage.confibean);
+    i=texts.length;
+  }
+  else{
+    localStorage.chat = JSON.stringify(texts);
+    localStorage.confibean = JSON.stringify(confibean);
+    i=texts.length;
+  }
+  };
+
+  </script>
 
 
 </body>

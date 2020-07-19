@@ -1,5 +1,7 @@
-function loadMessage1(chat){
-    texts = JSON.parse(chat);		
+function loadMessage1(text,confi){
+    texts = JSON.parse(text);
+    confibean = JSON.parse(confi);	
+    console.log(confibean);			
     $.ajax({
         success: function(html){
     var c ="";
