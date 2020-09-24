@@ -17,21 +17,33 @@
   <!-- Main layout -->
   <main>
 
-    <div class="container">
+    <div class="container mb-5">
         <div class="card text-center">
             <div class="card-header">
               Welcome User
             </div>
-            <div class="card-body text-muted">
+            <div class="card-body text-muted ">
               <form name="message" action="">
-              <button class="btn btn-primary" name="receivemsg" type="submit"  id="receivemsg" value="receive">Receive</button>
+            <div class="container mb-5">
+              <div class="row">
+                <div class="col-sm">
+                  <button class="btn btn-primary" name="receivedata" type="submit"  id="receivedata" value="receive">Receive Data</button>
+                </div>
               </form>
-              <button class="btn btn-danger" onclick="deleteLog()"  id="deletemsg" value="delete">Delete Chat log</button>
-          </div>
+                <div class="col-sm">
+                  <button class="btn btn-danger" onclick="deleteLog()"  id="deletedata" value="delete">Delete Data</button>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
             <div class="card-footer">
               <div class='text-secondary'>Data</div><br>
-             <div id="chatbox">
-                {% block chatcontent %}
+             <div id="databox">
+                {% block databox %}
                 {% endblock %}
              </div>
             </div>
@@ -49,22 +61,22 @@
   integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" 
   integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/chatbox.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/loadMessage1.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/dataBox.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/loadData1.js') }}"></script>
   <script type="text/javascript">
   
   function initialize() {
-  var texts = JSON.parse('{{texts | tojson | safe }}');
+  var data = JSON.parse('{{data | tojson | safe }}');
   var confibean = JSON.parse('{{confibean | tojson | safe }}'); 
-  if(localStorage.texts){
-    texts = JSON.parse(localStorage.texts);
+  if(localStorage.data){
+    data = JSON.parse(localStorage.data);
     confibean = JSON.parse(localStorage.confibean);
-    i=texts.length;
+    i=data.length;
   }
   else{
-    localStorage.chat = JSON.stringify(texts);
+    localStorage.data = JSON.stringify(data);
     localStorage.confibean = JSON.stringify(confibean);
-    i=texts.length;
+    i=data.length;
   }
   };
 

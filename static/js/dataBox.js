@@ -11,31 +11,38 @@
     texts.push(text);
     localStorage.chat = JSON.stringify(texts);
     i++;
-    loadMessage1(localStorage.chat);
+    loadData1(localStorage.chat);
     }
     else{
-      loadMessage1(localStorage.chat);
+      loadData1(localStorage.chat);
     }
         $.post("/", {type:"user",srno:i,msg:userMsg});
         $("#usermsg").attr("value", "");
         return false;
     });
-
-  //if user receives message from agent
-  $("#receivemsg").click(function(){
+    
+  //if user receives data from localstorage
+  $("#receivedata").click(function(){
+    var b;
     confibean = JSON.parse(localStorage.confibean);	
-    if(confibean[0]['type']=="chat"){
-      loadMessage1(localStorage.chat);
+    if(confibean[0]['type']=="chat" && localStorage.data){
+      $.ajax({
+        success: function(html){
+          b = loadData1(localStorage.data);
+          console.log(b);
+          $("#databox").html(b);
+            },
+          });
     }else{
-      console.log("no data input")	
+      console.log("no data input");
     }
     return false;
     });
 
 
 function deleteLog(){
-  localStorage.removeItem("chat");
-  console.log(localStorage.chat)
-  texts = [];
-  console.log(texts);
+  localStorage.removeItem("data");
+  console.log(localStorage.data)
+  data = [];
+  console.log(data);
 }
